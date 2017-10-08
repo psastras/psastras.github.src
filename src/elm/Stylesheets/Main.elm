@@ -40,9 +40,6 @@ css =
             [ fontWeight normal
             , fontFamilies [ "Roboto Slab" ]
             ]
-        , h1
-            [ fontSize (Css.rem 3)
-            ]
         , class Container
             [ displayFlex
             , height (vh 100)
@@ -128,9 +125,10 @@ css =
             , padding (Css.rem 1)
             ]
         , class PageHeaderAvatar
-            [ width (Css.rem 5)
-            , height (Css.rem 5)
+            [ width (Css.rem 4)
+            , height (Css.rem 4)
             , borderRadius (pct 50)
+            , marginBottom (Css.rem 2)
             , border3 (Css.rem 0.25) solid (rgb 255 255 255)
             ]
         , class NavAvatar
