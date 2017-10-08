@@ -17,7 +17,7 @@ code =
                 [ h1 [] [ text ("Code") ]
                 , p []
                     [ text ("This website is written in Elm, a purely functional, statically typed language.  Its source code is available on ")
-                    , a [ href "https://github.com/psastras/psastras.github.io/tree/develop" ] [ text ("Github") ]
+                    , a [ href "https://github.com/psastras/psastras.github.src" ] [ text ("Github") ]
                     , text (".")
                     ]
                 , h2 [] [ text ("License") ]
