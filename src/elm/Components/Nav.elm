@@ -8,7 +8,7 @@ import MD5
 
 
 { id, class, classList } =
-    mainNamespace
+    navNamespace
 
 
 gravatarUrl : String

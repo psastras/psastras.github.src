@@ -12,7 +12,6 @@ type CssClasses
     | PageHeader
     | PageHeaderMini
     | PageContent
-    | Centered
     | PageHeaderText
     | PageContentText
     | PageHeaderAvatar
@@ -22,3 +21,8 @@ type CssClasses
 mainNamespace : Html.CssHelpers.Namespace String class id msg
 mainNamespace =
     withNamespace "main"
+
+
+navNamespace : Html.CssHelpers.Namespace String class id msg
+navNamespace =
+    withNamespace "nav"

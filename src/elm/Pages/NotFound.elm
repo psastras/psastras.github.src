@@ -1,6 +1,5 @@
 module Pages.NotFound exposing (notFound)
 
-import Components.Center exposing (center)
 import SharedStyles exposing (..)
 import Html exposing (..)
 
@@ -12,5 +11,5 @@ import Html exposing (..)
 notFound : Html msg
 notFound =
     div [ class [ Page ] ]
-        [ center (h1 [] [ text ("Page Not Found") ])
+        [ h1 [] [ text ("Page Not Found") ]
         ]

@@ -45,31 +45,6 @@ css =
             , height (vh 100)
             , width (vw 100)
             ]
-        , class Nav
-            [ backgroundColor (rgb 22 22 22)
-            , displayFlex
-            , flexDirection column
-            , padding2 (Css.rem 1) (Css.rem 0.5)
-            , color (rgb 50 220 100)
-            , fontSize (Css.rem 1.5)
-            , children
-                [ i
-                    [ padding (Css.rem 0.5)
-                    , display block
-                    ]
-                , a
-                    [ color (rgb 180 180 180)
-                    , padding (Css.rem 0.5)
-                    , display block
-                    , visited
-                        [ color (rgb 180 180 180)
-                        ]
-                    , hover
-                        [ color (rgb 255 255 255)
-                        ]
-                    ]
-                ]
-            ]
         , class PageContainer
             [ overflowY scroll
             , property "-webkit-overflow-scrolling" "touch"
@@ -131,18 +106,5 @@ css =
             , borderRadius (pct 50)
             , marginBottom (Css.rem 2)
             , border3 (Css.rem 0.25) solid (rgb 255 255 255)
-            ]
-        , class NavAvatar
-            [ width (Css.rem 2)
-            , height (Css.rem 2)
-            , borderRadius (pct 50)
-            , marginBottom (Css.rem 1)
-            , border3 (Css.rem 0.2) solid (rgb 255 255 255)
-            ]
-        , class Centered
-            [ width (pct 100)
-            , display block
-            , displayFlex
-            , justifyContent center
             ]
         ]
