@@ -1,6 +1,7 @@
 module Stylesheets.Main exposing (css)
 
 import Css exposing (..)
+import Css.Media exposing (mediaQuery)
 import Css.Elements exposing (..)
 import Css.Namespace exposing (namespace)
 import SharedStyles exposing (..)
@@ -40,6 +41,12 @@ css =
             [ fontWeight normal
             , fontFamilies [ "Roboto Slab" ]
             ]
+        , h1 [ fontSize (Css.rem 1.5) ]
+        , h2 [ fontSize (Css.rem 1.2) ]
+        , h3
+            [ margin (Css.rem 0.25)
+            , fontSize (Css.rem 0.9)
+            ]
         , class Container
             [ displayFlex
             , height (vh 100)
@@ -65,6 +72,7 @@ css =
             , backgroundColor (rgba 0 0 0 0.4)
             , paddingLeft (Css.rem 1)
             , paddingRight (Css.rem 1)
+            , flexDirection column
             ]
         , class PageHeaderRow
             [ maxWidth (Css.rem 40)
@@ -73,12 +81,13 @@ css =
             , marginRight auto
             , displayFlex
             , alignItems center
+            , justifyContent center
             ]
         , class PageHeaderText
             [ width (pct 100)
             , displayFlex
             , flexDirection column
-            , paddingBottom (Css.rem 1)
+            , padding2 (Css.rem 1) zero
             , children
                 [ h1
                     [ marginTop zero
@@ -106,5 +115,14 @@ css =
             , borderRadius (pct 50)
             , marginBottom (Css.rem 2)
             , border3 (Css.rem 0.25) solid (rgb 255 255 255)
+            , property "visibility" "hidden"
+            ]
+        , mediaQuery [ "screen and ( min-width: 480px )" ]
+            [ h1 [ fontSize (Css.rem 2.2) ]
+            , h2 [ fontSize (Css.rem 1.7) ]
+            , h3 [ fontSize (Css.rem 1.2) ]
+            , class PageHeaderAvatar
+                [ property "visibility" "visible"
+                ]
             ]
         ]

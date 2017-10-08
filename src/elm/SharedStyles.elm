@@ -16,6 +16,8 @@ type CssClasses
     | PageContentText
     | PageHeaderAvatar
     | PageHeaderRow
+    | Logo
+    | LogoContainer
 
 
 mainNamespace : Html.CssHelpers.Namespace String class id msg
@@ -26,3 +28,8 @@ mainNamespace =
 navNamespace : Html.CssHelpers.Namespace String class id msg
 navNamespace =
     withNamespace "nav"
+
+
+logoNamespace : Html.CssHelpers.Namespace String class id msg
+logoNamespace =
+    withNamespace "logo"

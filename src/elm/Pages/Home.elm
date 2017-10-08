@@ -3,6 +3,7 @@ module Pages.Home exposing (home)
 import SharedStyles exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Components.Logo exposing (..)
 import MD5
 
 
@@ -19,11 +20,12 @@ home : Html msg
 home =
     div [ class [ Page ] ]
         [ div [ class [ PageHeader ] ]
-            [ div [ class [ PageHeaderRow ] ]
+            [ div [ class [ PageHeaderRow ], style [ ( "flex", "auto" ) ] ] [ logo ]
+            , div [ class [ PageHeaderRow ] ]
                 [ div [ class [ PageHeaderText ] ]
                     [ (h1 [] [ text ("@psastras") ])
-                    , (span [] [ text ("Paul Sastrasinh") ])
-                    , (span [] [ text ("Software Engineer, NYC Area") ])
+                    , (h3 [] [ text ("Paul Sastrasinh") ])
+                    , (h3 [] [ text ("Full Stack Software Engineer, NYC Area") ])
                     ]
                 , img [ class [ PageHeaderAvatar ], src gravatarUrl ] []
                 ]

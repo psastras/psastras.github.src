@@ -9,6 +9,10 @@ import Html.Attributes exposing (..)
     mainNamespace
 
 
+
+-- VIEW
+
+
 code : Html msg
 code =
     div [ class [ Page ] ]
