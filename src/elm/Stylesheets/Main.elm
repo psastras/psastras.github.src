@@ -72,6 +72,7 @@ css =
             ]
         , class PageContainer
             [ overflowY scroll
+            , property "webkit-overflow-scrolling" "scroll"
             , width (pct 100)
             , backgroundImage (url "../img/bg.jpg")
             , backgroundSize cover
