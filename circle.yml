@@ -46,6 +46,11 @@ jobs:
       # run tests!
       - run: yarn test
 
+      - save_cache:
+          paths:
+            - tests/elm-stuff
+          key: v1-dependencies-{{ checksum "tests/elm-package.json" }}
+
       # build prod module
       - run: yarn build
 

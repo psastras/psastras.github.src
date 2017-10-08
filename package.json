@@ -8,10 +8,10 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --hot --inline",
-    "test": "echo test",
+    "test": "elm-test",
     "prebuild": "rimraf dist",
     "build": "webpack",
-    "postinstall": "yes | elm package install",
+    "postinstall": "elm package install --yes",
     "reinstall": "npm i rimraf && rimraf node_modules && npm uninstall -g elm && npm i -g elm && npm i && elm package install"
   },
   "devDependencies": {
@@ -20,6 +20,7 @@
     "elm": "^0.18.0",
     "elm-css-webpack-loader": "^3.3.0",
     "elm-hot-loader": "^0.5.4",
+    "elm-test": "^0.18.9",
     "elm-webpack-loader": "^4.3.1",
     "extract-text-webpack-plugin": "^3.0.1",
     "file-loader": "^1.1.5",
