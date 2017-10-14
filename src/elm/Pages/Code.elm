@@ -1,4 +1,4 @@
-module Pages.Code exposing (code)
+module Pages.Code exposing (..)
 
 import SharedStyles exposing (..)
 import Html exposing (..)
@@ -7,6 +7,28 @@ import Html.Attributes exposing (..)
 
 { id, class, classList } =
     mainNamespace
+
+
+
+-- MODEL
+
+
+type alias Model =
+    { status : String }
+
+
+init : Model
+init =
+    { status = "Not Loaded" }
+
+
+onLoad : Model
+onLoad =
+    let
+        _ =
+            Debug.log "Loaded code page"
+    in
+        { status = "Loaded" }
 
 
 

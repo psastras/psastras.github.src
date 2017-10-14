@@ -28,12 +28,15 @@ main =
 
 type alias Model =
     { route : Route
+    , codePage : Pages.Code.Model
     }
 
 
 init : Navigation.Location -> ( Model, Cmd Msg )
 init location =
-    ( Model (parseLocation location)
+    ( { route = (parseLocation location)
+      , codePage = Pages.Code.init
+      }
     , Cmd.none
     )
 
@@ -68,9 +71,19 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         UrlChange location ->
-            ( { route = (parseLocation location) }
-            , Cmd.none
-            )
+            let
+                route =
+                    (parseLocation location)
+            in
+                case route of
+                    HomeRoute ->
+                        ( { model | route = route }, Cmd.none )
+
+                    NotFoundRoute ->
+                        ( { model | route = route }, Cmd.none )
+
+                    CodeRoute ->
+                        ( { model | route = route, codePage = Pages.Code.onLoad }, Cmd.none )
 
 
 

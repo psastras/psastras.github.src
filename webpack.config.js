@@ -64,7 +64,10 @@ if (isDev) {
           use: [
             'elm-hot-loader',
             {
-              loader: 'elm-webpack-loader'
+              loader: 'elm-webpack-loader',
+              options: {
+                debug: true
+              }
             }
           ]
         }
