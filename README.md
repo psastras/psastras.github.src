@@ -16,7 +16,7 @@ To start the hot reload server run
 yarn start
 ```
 
-Then, go to [localhost:8080](localhost:8080) to view the site.
+Then, go to [localhost:1234](localhost:1234) to view the site.
 
 Running
 
