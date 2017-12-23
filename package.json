@@ -6,7 +6,7 @@
   "author": "Paul Sastrasinh <psastras@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "parcel index.html",
+    "start": "parcel src/index.html",
     "build": "parcel build src/index.html  --public-url ./",
     "precommit": "lint-staged",
     "test": "echo 'test'"
@@ -25,6 +25,7 @@
     "animejs": "^2.2.0",
     "bulma": "^0.6.1",
     "font-awesome": "^4.7.0",
-    "preact": "^8.2.7"
+    "preact": "^8.2.7",
+    "three": "^0.89.0"
   }
 }
