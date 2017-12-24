@@ -2,6 +2,7 @@ import { h, render } from "preact";
 import { App } from "./App";
 import "bulma/css/bulma.css";
 import "font-awesome/css/font-awesome.css";
+import "animate.css/animate.css";
 import "./index.css";
 
 document.addEventListener("DOMContentLoaded", function() {

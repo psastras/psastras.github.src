@@ -15,7 +15,7 @@ export class App extends Component<App.Props, App.State> {
         <Birds />
         <div style={{ position: "absolute", zIndex: 2, width: "100vw" }}>
           <section class="hero is-fullheight">
-            <Nav />
+            {/* <Nav /> */}
             <Main />
           </section>
         </div>

@@ -8,3 +8,11 @@ html {
 h1 {
   text-transform: uppercase;
 }
+
+a:hover {
+  animation: pulse 1s;
+}
+
+canvas {
+  animation: fadeIn 10s;
+}
