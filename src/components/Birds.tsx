@@ -215,6 +215,8 @@ class World {
   private scene = new THREE.Scene();
   private renderer: THREE.WebGLRenderer;
   private animation: number;
+  private cameraTarget = new THREE.Vector3(0, 0, 0);
+  private cameraDirection = new THREE.Vector3(0, 0, 0);
 
   constructor(
     canvas: HTMLCanvasElement,
@@ -265,6 +267,7 @@ class World {
 
     document.addEventListener("mousemove", this.onDocumentMouseMove, false);
     window.addEventListener("resize", this.onWindowResize, false);
+    window.addEventListener("deviceorientation", this.onDeviceOrientation);
   }
 
   private onWindowResize = (): void => {
@@ -274,7 +277,7 @@ class World {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   };
 
-  private onDocumentMouseMove = (event): void => {
+  private onDocumentMouseMove = (event: MouseEvent): void => {
     const vector = new THREE.Vector3(
       event.clientX - this.screenWidth / 2,
       -event.clientY + this.screenHeight / 2,
@@ -285,6 +288,16 @@ class World {
       vector.z = boid.position.z;
       boid.repulse(vector);
     }
+
+    const x = (event.clientX - this.screenWidth / 2) / this.screenWidth;
+    const y = (event.clientY - this.screenHeight / 2) / this.screenHeight;
+    this.cameraTarget = new THREE.Vector3(x * 175, -y * 175, 0);
+  };
+
+  private onDeviceOrientation = (e: DeviceOrientationEvent): void => {
+    const x = e.gamma / 90.0; // left to right
+    const y = e.beta / 180.0; // front to back
+    this.cameraTarget = new THREE.Vector3(x * 175, -y * 175, 0);
   };
 
   public animate = (): void => {
@@ -319,6 +332,17 @@ class World {
       (bird.geometry as THREE.Geometry).vertices[5].y = (bird.geometry as THREE.Geometry).vertices[4].y =
         Math.sin(bird.phase) * 5;
     }
+
+    // gradually point the camera towards the cameraTarget
+    const cameraDelta = new THREE.Vector3().subVectors(
+      this.cameraTarget,
+      this.cameraDirection
+    );
+    this.cameraDirection = new THREE.Vector3().addVectors(
+      this.cameraDirection,
+      cameraDelta.multiplyScalar(0.1)
+    );
+    this.camera.lookAt(this.cameraDirection);
 
     this.renderer.render(this.scene, this.camera);
   };
