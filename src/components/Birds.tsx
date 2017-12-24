@@ -71,9 +71,7 @@ class Boid {
       this._acceleration.add(this.reach(this._goal, 0.005));
     }
 
-    this._acceleration.add(this.alignment(boids));
-    this._acceleration.add(this.cohesion(boids));
-    this._acceleration.add(this.separation(boids));
+    this._acceleration.add(this.updateAcceleration(boids));
   }
 
   public checkBounds(): void {
@@ -115,16 +113,27 @@ class Boid {
     return steer;
   }
 
-  private alignment(boids: Boid[]): THREE.Vector3 {
+  private updateAcceleration(boids: Boid[]): THREE.Vector3 {
     const velSum = new THREE.Vector3();
+    const posSum = new THREE.Vector3();
+    const repSum = new THREE.Vector3();
+    const repulse = new THREE.Vector3();
+    const steer = new THREE.Vector3();
     let count = 0;
 
     for (const boid of boids) {
       if (Math.random() > 0.6) continue;
       const distance = boid.position.distanceTo(this._position);
-
       if (distance > 0 && distance <= this._neighborhoodRadius) {
+        // alignment
         velSum.add(boid.velocity);
+        // cohesion
+        posSum.add(boid.position);
+        // separation
+        repulse.subVectors(this._position, boid.position);
+        repulse.normalize();
+        repulse.divideScalar(distance);
+        repSum.add(repulse);
         count++;
       }
     }
@@ -135,58 +144,15 @@ class Boid {
       if (l > this._maxSteerForce) {
         velSum.divideScalar(l / this._maxSteerForce);
       }
-    }
-
-    return velSum;
-  }
-
-  private cohesion(boids: Boid[]): THREE.Vector3 {
-    const posSum = new THREE.Vector3();
-    const steer = new THREE.Vector3();
-    let count = 0;
-
-    for (const boid of boids) {
-      if (Math.random() > 0.6) continue;
-      const distance = boid.position.distanceTo(this._position);
-      if (distance > 0 && distance <= this._neighborhoodRadius) {
-        posSum.add(boid.position);
-        count++;
-      }
-    }
-
-    if (count > 0) {
       posSum.divideScalar(count);
     }
-
     steer.subVectors(posSum, this._position);
-
     const l = steer.length();
-
     if (l > this._maxSteerForce) {
       steer.divideScalar(l / this._maxSteerForce);
     }
 
-    return steer;
-  }
-
-  private separation(boids: Boid[]): THREE.Vector3 {
-    const posSum = new THREE.Vector3();
-    const repulse = new THREE.Vector3();
-
-    for (const boid of boids) {
-      if (Math.random() > 0.6) continue;
-
-      const distance = boid.position.distanceTo(this._position);
-
-      if (distance > 0 && distance <= this._neighborhoodRadius) {
-        repulse.subVectors(this._position, boid.position);
-        repulse.normalize();
-        repulse.divideScalar(distance);
-        posSum.add(repulse);
-      }
-    }
-
-    return posSum;
+    return velSum.add(repSum).add(steer);
   }
 
   public run(boids: Boid[]): void {
@@ -255,12 +221,12 @@ class World {
     );
     this.camera.position.z = 450;
 
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 300; i++) {
       this.boids.push(
         new Boid(
           new THREE.Vector3(
-            Math.random() * 400 - 200,
-            Math.random() * 400 - 200,
+            Math.random() * 1000 - 500,
+            Math.random() * 1000 - 500,
             Math.random() * 400 - 200
           ),
           new THREE.Vector3(
