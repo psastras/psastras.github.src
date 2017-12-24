@@ -324,7 +324,6 @@ class World {
       bird.position.copy(this.boids[i].position);
 
       let color = bird.material.color;
-      console.log(bird.position.z);
       color.r = color.g = color.b = Math.max(
         1 - (200 + bird.position.z) / 200,
         Math.max(
