@@ -4,16 +4,16 @@ This repository contains the source for [psastras.github.io](psastras.github.io)
 
 ## Development
 
-Assuming you have `yarn` installed, after cloning the repo, simply run
+Install dependencies:
 
 ```
-yarn install
+npm install
 ```
 
 To start the hot reload server run
 
 ```
-yarn start
+npm start
 ```
 
 Then, go to [localhost:1234](localhost:1234) to view the site.
@@ -21,7 +21,7 @@ Then, go to [localhost:1234](localhost:1234) to view the site.
 Running
 
 ```
-yarn build
+npm run build
 ```
 
 Will build the production ready minified version of the code.

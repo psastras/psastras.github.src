@@ -6,273 +6,248 @@ namespace Birds {
   export interface State {}
 }
 
+class Bird extends THREE.Geometry {
+  private vertices: THREE.Vector3[];
+  private faces: THREE.Face3[];
+  constructor() {
+    super();
+    this.vertices = [
+      [5, 0, 0],
+      [-5, -2, 1],
+      [-5, 0, 0],
+      [5, -2, -1],
+      [0, 2, -6],
+      [0, 2, 6],
+      [2, 0, 0],
+      [-3, 0, 0]
+    ].map(v => new THREE.Vector3(...v));
+
+    this.faces = [[0, 2, 1], [4, 7, 6], [5, 6, 7]].map(
+      f => new THREE.Face3(...f)
+    );
+    super.computeFaceNormals();
+  }
+}
+
+class Boid {
+  private vector = new THREE.Vector3();
+  private _acceleration = new THREE.Vector3();
+  private _neighborhoodRadius = 100;
+  private _maxSpeed = 4;
+  private _maxSteerForce = 0.1;
+  private _avoidWalls = true;
+  private _goal;
+  constructor(
+    private _position,
+    private _velocity,
+    private _width = 500,
+    private _height = 500,
+    private _depth = 200
+  ) {}
+
+  public get position(): THREE.Vector3 {
+    return this._position;
+  }
+
+  public get velocity(): THREE.Vector3 {
+    return this._velocity;
+  }
+
+  public move(): void {
+    this._velocity.add(this._acceleration);
+
+    const length = this._velocity.length();
+
+    if (length > this._maxSpeed) {
+      this._velocity.divideScalar(length / this._maxSpeed);
+    }
+
+    this._position.add(this._velocity);
+    this._acceleration.set(0, 0, 0);
+  }
+
+  private flock(boids: Boid[]) {
+    if (this._goal) {
+      this._acceleration.add(this.reach(this._goal, 0.005));
+    }
+
+    this._acceleration.add(this.alignment(boids));
+    this._acceleration.add(this.cohesion(boids));
+    this._acceleration.add(this.separation(boids));
+  }
+
+  public checkBounds(): void {
+    if (this._position.x > this._width) this._position.x = -this._width;
+    if (this._position.x < -this._width) this._position.x = this._width;
+    if (this._position.y > this._height) this._position.y = -this._height;
+    if (this._position.y < -this._height) this._position.y = this._height;
+    if (this._position.z > this._depth) this._position.z = -this._depth;
+    if (this._position.z < -this._depth) this._position.z = this._depth;
+  }
+
+  public avoid(target: THREE.Vector3): THREE.Vector3 {
+    const steer = new THREE.Vector3();
+    steer.copy(this._position);
+    steer.sub(target);
+    steer.multiplyScalar(1 / this._position.distanceToSquared(target));
+    return steer;
+  }
+
+  public repulse(target: THREE.Vector3): void {
+    const distance = this._position.distanceTo(target);
+
+    if (distance < 150) {
+      const steer = new THREE.Vector3();
+
+      steer.subVectors(this._position, target);
+      steer.multiplyScalar(0.5 / distance);
+
+      this._acceleration.add(steer);
+    }
+  }
+
+  public reach(target: THREE.Vector3, amount: number): THREE.Vector3 {
+    const steer = new THREE.Vector3();
+
+    steer.subVectors(target, this._position);
+    steer.multiplyScalar(amount);
+
+    return steer;
+  }
+
+  private alignment(boids: Boid[]): THREE.Vector3 {
+    let boid;
+    const velSum = new THREE.Vector3();
+    let count = 0;
+
+    for (let i = 0, il = boids.length; i < il; i++) {
+      // for (let boid in boids) {
+      // console.log(boid);
+      if (Math.random() > 0.6) continue;
+
+      boid = boids[i];
+
+      const distance = boid.position.distanceTo(this._position);
+
+      if (distance > 0 && distance <= this._neighborhoodRadius) {
+        velSum.add(boid.velocity);
+        count++;
+      }
+    }
+
+    if (count > 0) {
+      velSum.divideScalar(count);
+
+      const l = velSum.length();
+
+      if (l > this._maxSteerForce) {
+        velSum.divideScalar(l / this._maxSteerForce);
+      }
+    }
+
+    return velSum;
+  }
+
+  private cohesion(boids: Boid[]): THREE.Vector3 {
+    let boid,
+      distance,
+      posSum = new THREE.Vector3(),
+      steer = new THREE.Vector3(),
+      count = 0;
+
+    for (let i = 0, il = boids.length; i < il; i++) {
+      if (Math.random() > 0.6) continue;
+
+      boid = boids[i];
+      distance = boid.position.distanceTo(this._position);
+
+      if (distance > 0 && distance <= this._neighborhoodRadius) {
+        posSum.add(boid.position);
+        count++;
+      }
+    }
+
+    if (count > 0) {
+      posSum.divideScalar(count);
+    }
+
+    steer.subVectors(posSum, boid.position);
+
+    var l = steer.length();
+
+    if (l > this._maxSteerForce) {
+      steer.divideScalar(l / this._maxSteerForce);
+    }
+
+    return steer;
+  }
+
+  private separation(boids: Boid[]): THREE.Vector3 {
+    let boid,
+      distance,
+      posSum = new THREE.Vector3(),
+      repulse = new THREE.Vector3();
+
+    for (var i = 0, il = boids.length; i < il; i++) {
+      if (Math.random() > 0.6) continue;
+
+      boid = boids[i];
+      distance = boid.position.distanceTo(this._position);
+
+      if (distance > 0 && distance <= this._neighborhoodRadius) {
+        repulse.subVectors(this._position, boid.position);
+        repulse.normalize();
+        repulse.divideScalar(distance);
+        posSum.add(repulse);
+      }
+    }
+
+    return posSum;
+  }
+
+  public run(boids: Boid[]): void {
+    if (this._avoidWalls) {
+      this.vector.set(-this._width, this._position.y, this._position.z);
+      this.vector = this.avoid(this.vector);
+      this.vector.multiplyScalar(5);
+      this._acceleration.add(this.vector);
+
+      this.vector.set(this._width, this._position.y, this._position.z);
+      this.vector = this.avoid(this.vector);
+      this.vector.multiplyScalar(5);
+      this._acceleration.add(this.vector);
+
+      this.vector.set(this._position.x, -this._height, this._position.z);
+      this.vector = this.avoid(this.vector);
+      this.vector.multiplyScalar(5);
+      this._acceleration.add(this.vector);
+
+      this.vector.set(this._position.x, this._height, this._position.z);
+      this.vector = this.avoid(this.vector);
+      this.vector.multiplyScalar(5);
+      this._acceleration.add(this.vector);
+
+      this.vector.set(this._position.x, this._position.y, -this._depth);
+      this.vector = this.avoid(this.vector);
+      this.vector.multiplyScalar(5);
+      this._acceleration.add(this.vector);
+
+      this.vector.set(this._position.x, this._position.y, this._depth);
+      this.vector = this.avoid(this.vector);
+      this.vector.multiplyScalar(5);
+      this._acceleration.add(this.vector);
+    }
+
+    if (Math.random() > 0.5) {
+      this.flock(boids);
+    }
+
+    this.move();
+  }
+}
+
 export class Birds extends Component<Birds.Props, Birds.State> {
   componentDidMount(): void {
-    var Bird = function() {
-      var scope = this;
-
-      THREE.Geometry.call(this);
-
-      v(5, 0, 0);
-      v(-5, -2, 1);
-      v(-5, 0, 0);
-      v(-5, -2, -1);
-
-      v(0, 2, -6);
-      v(0, 2, 6);
-      v(2, 0, 0);
-      v(-3, 0, 0);
-
-      f3(0, 2, 1);
-      // f3( 0, 3, 2 );
-
-      f3(4, 7, 6);
-      f3(5, 6, 7);
-
-      this.computeFaceNormals();
-
-      function v(x, y, z) {
-        scope.vertices.push(new THREE.Vector3(x, y, z));
-      }
-
-      function f3(a, b, c) {
-        scope.faces.push(new THREE.Face3(a, b, c));
-      }
-    };
-
-    Bird.prototype = Object.create(THREE.Geometry.prototype);
-    Bird.prototype.constructor = Bird;
-    var Boid = function() {
-      var vector = new THREE.Vector3(),
-        _acceleration,
-        _width = 500,
-        _height = 500,
-        _depth = 200,
-        _goal,
-        _neighborhoodRadius = 100,
-        _maxSpeed = 4,
-        _maxSteerForce = 0.1,
-        _avoidWalls = false;
-
-      this.position = new THREE.Vector3();
-      this.velocity = new THREE.Vector3();
-      _acceleration = new THREE.Vector3();
-
-      this.setGoal = function(target) {
-        _goal = target;
-      };
-
-      this.setAvoidWalls = function(value) {
-        _avoidWalls = value;
-      };
-
-      this.setWorldSize = function(width, height, depth) {
-        _width = width;
-        _height = height;
-        _depth = depth;
-      };
-
-      this.run = function(boids) {
-        if (_avoidWalls) {
-          vector.set(-_width, this.position.y, this.position.z);
-          vector = this.avoid(vector);
-          vector.multiplyScalar(5);
-          _acceleration.add(vector);
-
-          vector.set(_width, this.position.y, this.position.z);
-          vector = this.avoid(vector);
-          vector.multiplyScalar(5);
-          _acceleration.add(vector);
-
-          vector.set(this.position.x, -_height, this.position.z);
-          vector = this.avoid(vector);
-          vector.multiplyScalar(5);
-          _acceleration.add(vector);
-
-          vector.set(this.position.x, _height, this.position.z);
-          vector = this.avoid(vector);
-          vector.multiplyScalar(5);
-          _acceleration.add(vector);
-
-          vector.set(this.position.x, this.position.y, -_depth);
-          vector = this.avoid(vector);
-          vector.multiplyScalar(5);
-          _acceleration.add(vector);
-
-          vector.set(this.position.x, this.position.y, _depth);
-          vector = this.avoid(vector);
-          vector.multiplyScalar(5);
-          _acceleration.add(vector);
-        } /* else {
-
-                this.checkBounds();
-
-            }
-            */
-
-        if (Math.random() > 0.5) {
-          this.flock(boids);
-        }
-
-        this.move();
-      };
-
-      this.flock = function(boids) {
-        if (_goal) {
-          _acceleration.add(this.reach(_goal, 0.005));
-        }
-
-        _acceleration.add(this.alignment(boids));
-        _acceleration.add(this.cohesion(boids));
-        _acceleration.add(this.separation(boids));
-      };
-
-      this.move = function() {
-        this.velocity.add(_acceleration);
-
-        var l = this.velocity.length();
-
-        if (l > _maxSpeed) {
-          this.velocity.divideScalar(l / _maxSpeed);
-        }
-
-        this.position.add(this.velocity);
-        _acceleration.set(0, 0, 0);
-      };
-
-      this.checkBounds = function() {
-        if (this.position.x > _width) this.position.x = -_width;
-        if (this.position.x < -_width) this.position.x = _width;
-        if (this.position.y > _height) this.position.y = -_height;
-        if (this.position.y < -_height) this.position.y = _height;
-        if (this.position.z > _depth) this.position.z = -_depth;
-        if (this.position.z < -_depth) this.position.z = _depth;
-      };
-
-      //
-
-      this.avoid = function(target) {
-        var steer = new THREE.Vector3();
-
-        steer.copy(this.position);
-        steer.sub(target);
-
-        steer.multiplyScalar(1 / this.position.distanceToSquared(target));
-
-        return steer;
-      };
-
-      this.repulse = function(target) {
-        var distance = this.position.distanceTo(target);
-
-        if (distance < 150) {
-          var steer = new THREE.Vector3();
-
-          steer.subVectors(this.position, target);
-          steer.multiplyScalar(0.5 / distance);
-
-          _acceleration.add(steer);
-        }
-      };
-
-      this.reach = function(target, amount) {
-        var steer = new THREE.Vector3();
-
-        steer.subVectors(target, this.position);
-        steer.multiplyScalar(amount);
-
-        return steer;
-      };
-
-      this.alignment = function(boids) {
-        var boid,
-          velSum = new THREE.Vector3(),
-          count = 0;
-
-        for (var i = 0, il = boids.length; i < il; i++) {
-          if (Math.random() > 0.6) continue;
-
-          boid = boids[i];
-
-          const distance = boid.position.distanceTo(this.position);
-
-          if (distance > 0 && distance <= _neighborhoodRadius) {
-            velSum.add(boid.velocity);
-            count++;
-          }
-        }
-
-        if (count > 0) {
-          velSum.divideScalar(count);
-
-          var l = velSum.length();
-
-          if (l > _maxSteerForce) {
-            velSum.divideScalar(l / _maxSteerForce);
-          }
-        }
-
-        return velSum;
-      };
-
-      this.cohesion = function(boids) {
-        var boid,
-          distance,
-          posSum = new THREE.Vector3(),
-          steer = new THREE.Vector3(),
-          count = 0;
-
-        for (var i = 0, il = boids.length; i < il; i++) {
-          if (Math.random() > 0.6) continue;
-
-          boid = boids[i];
-          distance = boid.position.distanceTo(this.position);
-
-          if (distance > 0 && distance <= _neighborhoodRadius) {
-            posSum.add(boid.position);
-            count++;
-          }
-        }
-
-        if (count > 0) {
-          posSum.divideScalar(count);
-        }
-
-        steer.subVectors(posSum, this.position);
-
-        var l = steer.length();
-
-        if (l > _maxSteerForce) {
-          steer.divideScalar(l / _maxSteerForce);
-        }
-
-        return steer;
-      };
-
-      this.separation = function(boids) {
-        var boid,
-          distance,
-          posSum = new THREE.Vector3(),
-          repulse = new THREE.Vector3();
-
-        for (var i = 0, il = boids.length; i < il; i++) {
-          if (Math.random() > 0.6) continue;
-
-          boid = boids[i];
-          distance = boid.position.distanceTo(this.position);
-
-          if (distance > 0 && distance <= _neighborhoodRadius) {
-            repulse.subVectors(this.position, boid.position);
-            repulse.normalize();
-            repulse.divideScalar(distance);
-            posSum.add(repulse);
-          }
-        }
-
-        return posSum;
-      };
-    };
-
     var SCREEN_WIDTH = window.innerWidth,
       SCREEN_HEIGHT = window.innerHeight,
       SCREEN_WIDTH_HALF = SCREEN_WIDTH / 2,
@@ -300,16 +275,18 @@ export class Birds extends Component<Birds.Props, Birds.State> {
       boids = [];
 
       for (var i = 0; i < 200; i++) {
-        boid = boids[i] = new Boid();
-        boid.position.x = Math.random() * 400 - 200;
-        boid.position.y = Math.random() * 400 - 200;
-        boid.position.z = Math.random() * 400 - 200;
-        boid.velocity.x = Math.random() * 2 - 1;
-        boid.velocity.y = Math.random() * 2 - 1;
-        boid.velocity.z = Math.random() * 2 - 1;
-        boid.setAvoidWalls(true);
-        boid.setWorldSize(500, 500, 400);
-
+        boid = boids[i] = new Boid(
+          new THREE.Vector3(
+            Math.random() * 400 - 200,
+            Math.random() * 400 - 200,
+            Math.random() * 400 - 200
+          ),
+          new THREE.Vector3(
+            Math.random() * 2 - 1,
+            Math.random() * 2 - 1,
+            Math.random() * 2 - 1
+          )
+        );
         bird = birds[i] = new THREE.Mesh(
           new Bird(),
           new THREE.MeshBasicMaterial({

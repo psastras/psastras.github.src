@@ -1,12 +1,12 @@
 import { h, Component } from "preact";
 import * as anime from "animejs";
 
-namespace Canvas {
+namespace Particles {
   export interface Props {}
   export interface State {}
 }
 
-export class Canvas extends Component<Canvas.Props, Canvas.State> {
+export class Particles extends Component<Particles.Props, Particles.State> {
   componentDidMount(): void {
     var c = document.getElementById("c") as HTMLCanvasElement;
     var ctx = c.getContext("2d");
