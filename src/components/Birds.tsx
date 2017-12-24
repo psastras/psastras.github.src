@@ -235,14 +235,18 @@ class World {
   private boids = new Array<Boid>();
   private birds = new Array<THREE.Mesh>();
   private scene = new THREE.Scene();
-  private renderer = new THREE.WebGLRenderer({
-    canvas: document.getElementById("birds"),
-    alpha: true
-  });
+  private renderer: THREE.WebGLRenderer;
+  private animation: number;
+
   constructor(
+    canvas: HTMLCanvasElement,
     private screenWidth = window.innerWidth,
     private screenHeight = window.innerHeight
   ) {
+    this.renderer = new THREE.WebGLRenderer({
+      canvas,
+      alpha: true
+    });
     this.camera = new THREE.PerspectiveCamera(
       75,
       this.screenWidth / this.screenHeight,
@@ -282,7 +286,6 @@ class World {
     this.renderer.setSize(this.screenWidth, this.screenHeight);
 
     document.addEventListener("mousemove", this.onDocumentMouseMove, false);
-
     window.addEventListener("resize", this.onWindowResize, false);
   }
 
@@ -307,7 +310,7 @@ class World {
   };
 
   public animate = (): void => {
-    requestAnimationFrame(this.animate);
+    this.animation = requestAnimationFrame(this.animate);
 
     this.render();
   };
@@ -321,7 +324,14 @@ class World {
       bird.position.copy(this.boids[i].position);
 
       let color = bird.material.color;
-      color.r = color.g = color.b = (500 - bird.position.z) / 1000;
+      console.log(bird.position.z);
+      color.r = color.g = color.b = Math.max(
+        1 - (200 + bird.position.z) / 200,
+        Math.max(
+          1 - (500 - Math.abs(bird.position.y)) / 500,
+          1 - (500 - Math.abs(bird.position.x)) / 500
+        )
+      );
 
       bird.rotation.y = Math.atan2(-boid.velocity.z, boid.velocity.x);
       bird.rotation.z = Math.asin(boid.velocity.y / boid.velocity.length());
@@ -333,11 +343,24 @@ class World {
 
     this.renderer.render(this.scene, this.camera);
   };
+
+  public destroy(): void {
+    cancelAnimationFrame(this.animation);
+    document.removeEventListener("mousemove", this.onDocumentMouseMove, false);
+    window.removeEventListener("resize", this.onWindowResize, false);
+  }
 }
 
 export class Birds extends Component<Birds.Props, Birds.State> {
+  private canvas: HTMLCanvasElement;
+  private world: World;
   componentDidMount(): void {
-    new World().animate();
+    this.world = new World(this.canvas);
+    this.world.animate();
+  }
+
+  componentWillUnmount(): void {
+    this.world.destroy();
   }
 
   render(): JSX.Element {
@@ -347,7 +370,7 @@ export class Birds extends Component<Birds.Props, Birds.State> {
           position: "absolute",
           zIndex: 1
         }}
-        id="birds"
+        ref={e => (this.canvas = e as HTMLCanvasElement)}
       />
     );
   }
