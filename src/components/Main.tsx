@@ -18,7 +18,7 @@ export class Main extends Component<Main.Props, Main.State> {
             <div class="column">
               <div class="buttons">
                 <a
-                  class="button is-primary is-outlined is-medium"
+                  class="button is-primary is-medium"
                   href="https://github.com/psastras"
                 >
                   <span class="icon">
@@ -27,7 +27,7 @@ export class Main extends Component<Main.Props, Main.State> {
                   <span>Github</span>
                 </a>
                 <a
-                  class="button is-primary is-outlined is-medium"
+                  class="button is-primary is-medium"
                   href="https://www.linkedin.com/in/paul-sastrasinh-82480153/"
                 >
                   <span class="icon">
@@ -38,6 +38,14 @@ export class Main extends Component<Main.Props, Main.State> {
                 </a>
               </div>
               <div class="buttons">
+                <a
+                  class="button is-white is-medium"
+                  href="https://medium.com/@paul.sastrasinh"
+                >
+                  <span class="icon">
+                    <i class="fa fa-medium" />
+                  </span>
+                </a>
                 <a
                   class="button is-white is-medium"
                   href="https://500px.com/psastras"
