@@ -116,17 +116,11 @@ class Boid {
   }
 
   private alignment(boids: Boid[]): THREE.Vector3 {
-    let boid;
     const velSum = new THREE.Vector3();
     let count = 0;
 
-    for (let i = 0, il = boids.length; i < il; i++) {
-      // for (let boid in boids) {
-      // console.log(boid);
+    for (const boid of boids) {
       if (Math.random() > 0.6) continue;
-
-      boid = boids[i];
-
       const distance = boid.position.distanceTo(this._position);
 
       if (distance > 0 && distance <= this._neighborhoodRadius) {
@@ -137,9 +131,7 @@ class Boid {
 
     if (count > 0) {
       velSum.divideScalar(count);
-
       const l = velSum.length();
-
       if (l > this._maxSteerForce) {
         velSum.divideScalar(l / this._maxSteerForce);
       }
@@ -149,18 +141,13 @@ class Boid {
   }
 
   private cohesion(boids: Boid[]): THREE.Vector3 {
-    let boid,
-      distance,
-      posSum = new THREE.Vector3(),
-      steer = new THREE.Vector3(),
-      count = 0;
+    const posSum = new THREE.Vector3();
+    const steer = new THREE.Vector3();
+    let count = 0;
 
-    for (let i = 0, il = boids.length; i < il; i++) {
+    for (const boid of boids) {
       if (Math.random() > 0.6) continue;
-
-      boid = boids[i];
-      distance = boid.position.distanceTo(this._position);
-
+      const distance = boid.position.distanceTo(this._position);
       if (distance > 0 && distance <= this._neighborhoodRadius) {
         posSum.add(boid.position);
         count++;
@@ -171,9 +158,9 @@ class Boid {
       posSum.divideScalar(count);
     }
 
-    steer.subVectors(posSum, boid.position);
+    steer.subVectors(posSum, this._position);
 
-    var l = steer.length();
+    const l = steer.length();
 
     if (l > this._maxSteerForce) {
       steer.divideScalar(l / this._maxSteerForce);
@@ -183,16 +170,13 @@ class Boid {
   }
 
   private separation(boids: Boid[]): THREE.Vector3 {
-    let boid,
-      distance,
-      posSum = new THREE.Vector3(),
-      repulse = new THREE.Vector3();
+    const posSum = new THREE.Vector3();
+    const repulse = new THREE.Vector3();
 
-    for (var i = 0, il = boids.length; i < il; i++) {
+    for (const boid of boids) {
       if (Math.random() > 0.6) continue;
 
-      boid = boids[i];
-      distance = boid.position.distanceTo(this._position);
+      const distance = boid.position.distanceTo(this._position);
 
       if (distance > 0 && distance <= this._neighborhoodRadius) {
         repulse.subVectors(this._position, boid.position);
@@ -246,36 +230,30 @@ class Boid {
   }
 }
 
-export class Birds extends Component<Birds.Props, Birds.State> {
-  componentDidMount(): void {
-    var SCREEN_WIDTH = window.innerWidth,
-      SCREEN_HEIGHT = window.innerHeight,
-      SCREEN_WIDTH_HALF = SCREEN_WIDTH / 2,
-      SCREEN_HEIGHT_HALF = SCREEN_HEIGHT / 2;
+class World {
+  private camera: THREE.PerspectiveCamera;
+  private boids = new Array<Boid>();
+  private birds = new Array<THREE.Mesh>();
+  private scene = new THREE.Scene();
+  private renderer = new THREE.WebGLRenderer({
+    canvas: document.getElementById("birds"),
+    alpha: true
+  });
+  constructor(
+    private screenWidth = window.innerWidth,
+    private screenHeight = window.innerHeight
+  ) {
+    this.camera = new THREE.PerspectiveCamera(
+      75,
+      this.screenWidth / this.screenHeight,
+      1,
+      10000
+    );
+    this.camera.position.z = 450;
 
-    var camera, scene, renderer, birds, bird;
-
-    var boid, boids;
-
-    init();
-    animate();
-
-    function init() {
-      camera = new THREE.PerspectiveCamera(
-        75,
-        SCREEN_WIDTH / SCREEN_HEIGHT,
-        1,
-        10000
-      );
-      camera.position.z = 450;
-
-      scene = new THREE.Scene();
-
-      birds = [];
-      boids = [];
-
-      for (var i = 0; i < 200; i++) {
-        boid = boids[i] = new Boid(
+    for (let i = 0; i < 200; i++) {
+      this.boids.push(
+        new Boid(
           new THREE.Vector3(
             Math.random() * 400 - 200,
             Math.random() * 400 - 200,
@@ -286,83 +264,80 @@ export class Birds extends Component<Birds.Props, Birds.State> {
             Math.random() * 2 - 1,
             Math.random() * 2 - 1
           )
-        );
-        bird = birds[i] = new THREE.Mesh(
-          new Bird(),
-          new THREE.MeshBasicMaterial({
-            color: Math.random() * 0xffffff,
-            side: THREE.DoubleSide
-          })
-        );
-        bird.phase = Math.floor(Math.random() * 62.83);
-        scene.add(bird);
-      }
-
-      renderer = new THREE.WebGLRenderer({
-        canvas: document.getElementById("birds"),
-        alpha: true
-      });
-      renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-
-      document.addEventListener("mousemove", onDocumentMouseMove, false);
-
-      window.addEventListener("resize", onWindowResize, false);
-    }
-
-    function onWindowResize() {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    }
-
-    function onDocumentMouseMove(event) {
-      var vector = new THREE.Vector3(
-        event.clientX - SCREEN_WIDTH_HALF,
-        -event.clientY + SCREEN_HEIGHT_HALF,
-        0
+        )
       );
-
-      for (var i = 0, il = boids.length; i < il; i++) {
-        boid = boids[i];
-
-        vector.z = boid.position.z;
-
-        boid.repulse(vector);
-      }
+      const bird = new THREE.Mesh(
+        new Bird(),
+        new THREE.MeshBasicMaterial({
+          color: Math.random() * 0xffffff,
+          side: THREE.DoubleSide
+        })
+      );
+      bird.phase = Math.floor(Math.random() * 62.83);
+      this.birds.push(bird);
+      this.scene.add(bird);
     }
 
-    //
+    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setSize(this.screenWidth, this.screenHeight);
 
-    function animate() {
-      requestAnimationFrame(animate);
+    document.addEventListener("mousemove", this.onDocumentMouseMove, false);
 
-      render();
+    window.addEventListener("resize", this.onWindowResize, false);
+  }
+
+  private onWindowResize = (): void => {
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+  };
+
+  private onDocumentMouseMove = (event): void => {
+    const vector = new THREE.Vector3(
+      event.clientX - this.screenWidth / 2,
+      -event.clientY + this.screenHeight / 2,
+      0
+    );
+
+    for (const boid of this.boids) {
+      vector.z = boid.position.z;
+      boid.repulse(vector);
+    }
+  };
+
+  public animate = (): void => {
+    requestAnimationFrame(this.animate);
+
+    this.render();
+  };
+
+  private render = (): void => {
+    for (let i = 0, il = this.birds.length; i < il; i++) {
+      const boid = this.boids[i];
+      boid.run(this.boids);
+
+      const bird = this.birds[i];
+      bird.position.copy(this.boids[i].position);
+
+      let color = bird.material.color;
+      color.r = color.g = color.b = (500 - bird.position.z) / 1000;
+
+      bird.rotation.y = Math.atan2(-boid.velocity.z, boid.velocity.x);
+      bird.rotation.z = Math.asin(boid.velocity.y / boid.velocity.length());
+
+      bird.phase = (bird.phase + (Math.max(0, bird.rotation.z) + 0.1)) % 62.83;
+      bird.geometry.vertices[5].y = bird.geometry.vertices[4].y =
+        Math.sin(bird.phase) * 5;
     }
 
-    function render() {
-      for (var i = 0, il = birds.length; i < il; i++) {
-        boid = boids[i];
-        boid.run(boids);
+    this.renderer.render(this.scene, this.camera);
+  };
+}
 
-        bird = birds[i];
-        bird.position.copy(boids[i].position);
-
-        let color = bird.material.color;
-        color.r = color.g = color.b = (500 - bird.position.z) / 1000;
-
-        bird.rotation.y = Math.atan2(-boid.velocity.z, boid.velocity.x);
-        bird.rotation.z = Math.asin(boid.velocity.y / boid.velocity.length());
-
-        bird.phase =
-          (bird.phase + (Math.max(0, bird.rotation.z) + 0.1)) % 62.83;
-        bird.geometry.vertices[5].y = bird.geometry.vertices[4].y =
-          Math.sin(bird.phase) * 5;
-      }
-
-      renderer.render(scene, camera);
-    }
+export class Birds extends Component<Birds.Props, Birds.State> {
+  componentDidMount(): void {
+    new World().animate();
   }
 
   render(): JSX.Element {
