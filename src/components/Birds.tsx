@@ -34,7 +34,7 @@ class Boid {
   private _acceleration = new THREE.Vector3();
   private _neighborhoodRadius = 100;
   private _maxSpeed = 4;
-  private _maxSteerForce = 0.1;
+  private _maxSteerForce = 0.05;
   private _avoidWalls = true;
   private _goal;
   constructor(
@@ -119,32 +119,44 @@ class Boid {
     const repSum = new THREE.Vector3();
     const repulse = new THREE.Vector3();
     const steer = new THREE.Vector3();
-    let count = 0;
+    let alignmentCount = 0;
+    let cohesionCount = 0;
+    let seperationCount = 0;
 
     for (const boid of boids) {
-      if (Math.random() > 0.6) continue;
       const distance = boid.position.distanceTo(this._position);
       if (distance > 0 && distance <= this._neighborhoodRadius) {
         // alignment
-        velSum.add(boid.velocity);
+        if (Math.random() < 0.1) {
+          velSum.add(boid.velocity);
+          alignmentCount++;
+        }
         // cohesion
-        posSum.add(boid.position);
+        if (Math.random() < 0.1) {
+          posSum.add(boid.position);
+          cohesionCount++;
+        }
         // separation
-        repulse.subVectors(this._position, boid.position);
-        repulse.normalize();
-        repulse.divideScalar(distance);
-        repSum.add(repulse);
-        count++;
+        if (Math.random() < 0.8) {
+          repulse.subVectors(this._position, boid.position);
+          repulse.normalize();
+          repulse.divideScalar(distance);
+          repSum.add(repulse);
+          seperationCount++;
+        }
       }
     }
 
-    if (count > 0) {
-      velSum.divideScalar(count);
+    if (alignmentCount > 0) {
+      velSum.divideScalar(alignmentCount);
       const l = velSum.length();
       if (l > this._maxSteerForce) {
         velSum.divideScalar(l / this._maxSteerForce);
       }
-      posSum.divideScalar(count);
+    }
+
+    if (cohesionCount > 0) {
+      posSum.divideScalar(cohesionCount);
     }
     steer.subVectors(posSum, this._position);
     const l = steer.length();
@@ -230,9 +242,9 @@ class World {
             Math.random() * 400 - 200
           ),
           new THREE.Vector3(
-            Math.random() * 2 - 1,
-            Math.random() * 2 - 1,
-            Math.random() * 2 - 1
+            Math.random() * 1 - 0.5,
+            Math.random() * 1 - 0.5,
+            Math.random() * 1 - 0.5
           )
         )
       );
