@@ -12,8 +12,8 @@ export class Main extends Component<Main.Props, Main.State> {
         <div class="container">
           <div class="columns">
             <div class="column">
-              <h1 class="title">Paul Sastrasinh</h1>
-              <h2 class="subtitle">Developer, NYC</h2>
+              <h1 class="title has-text-light">Paul Sastrasinh</h1>
+              <h2 class="subtitle has-text-light">Developer, NYC</h2>
             </div>
             <div class="column">
               <div class="buttons">

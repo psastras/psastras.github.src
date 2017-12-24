@@ -7,8 +7,8 @@ namespace Birds {
 }
 
 class Bird extends THREE.Geometry {
-  private vertices: THREE.Vector3[];
-  private faces: THREE.Face3[];
+  public vertices: THREE.Vector3[];
+  public faces: THREE.Face3[];
   constructor() {
     super();
     this.vertices = [
@@ -23,7 +23,7 @@ class Bird extends THREE.Geometry {
     ].map(v => new THREE.Vector3(...v));
 
     this.faces = [[0, 2, 1], [4, 7, 6], [5, 6, 7]].map(
-      f => new THREE.Face3(...f)
+      f => new THREE.Face3(f[0], f[1], f[2])
     );
     super.computeFaceNormals();
   }
@@ -33,8 +33,8 @@ class Boid {
   private vector = new THREE.Vector3();
   private _acceleration = new THREE.Vector3();
   private _neighborhoodRadius = 100;
-  private _maxSpeed = 4;
-  private _maxSteerForce = 0.05;
+  private _maxSpeed = 3 * Math.random() + 1.5;
+  private _maxSteerForce = 0.05 * (Math.random() + 0.5);
   private _avoidWalls = true;
   private _goal;
   constructor(
@@ -127,17 +127,17 @@ class Boid {
       const distance = boid.position.distanceTo(this._position);
       if (distance > 0 && distance <= this._neighborhoodRadius) {
         // alignment
-        if (Math.random() < 0.1) {
+        if (Math.random() < 0.6) {
           velSum.add(boid.velocity);
           alignmentCount++;
         }
         // cohesion
-        if (Math.random() < 0.1) {
+        if (Math.random() < 0.6) {
           posSum.add(boid.position);
           cohesionCount++;
         }
         // separation
-        if (Math.random() < 0.8) {
+        if (Math.random() < 0.6) {
           repulse.subVectors(this._position, boid.position);
           repulse.normalize();
           repulse.divideScalar(distance);
@@ -242,9 +242,9 @@ class World {
             Math.random() * 400 - 200
           ),
           new THREE.Vector3(
-            Math.random() * 1 - 0.5,
-            Math.random() * 1 - 0.5,
-            Math.random() * 1 - 0.5
+            Math.random() * 10 - 5,
+            Math.random() * 10 - 5,
+            Math.random() * 10 - 5
           )
         )
       );
@@ -301,20 +301,22 @@ class World {
       const bird = this.birds[i];
       bird.position.copy(this.boids[i].position);
 
-      let color = bird.material.color;
-      color.r = color.g = color.b = Math.max(
-        1 - (200 + bird.position.z) / 200,
+      let color = (bird.material as THREE.MeshBasicMaterial).color;
+      color.r = color.g = color.b =
+        1 -
         Math.max(
-          1 - (500 - Math.abs(bird.position.y)) / 500,
-          1 - (500 - Math.abs(bird.position.x)) / 500
-        )
-      );
+          1 - (200 + bird.position.z) / 200,
+          Math.max(
+            1 - (500 - Math.abs(bird.position.y)) / 500,
+            1 - (500 - Math.abs(bird.position.x)) / 500
+          )
+        );
 
       bird.rotation.y = Math.atan2(-boid.velocity.z, boid.velocity.x);
       bird.rotation.z = Math.asin(boid.velocity.y / boid.velocity.length());
 
       bird.phase = (bird.phase + (Math.max(0, bird.rotation.z) + 0.1)) % 62.83;
-      bird.geometry.vertices[5].y = bird.geometry.vertices[4].y =
+      (bird.geometry as THREE.Geometry).vertices[5].y = (bird.geometry as THREE.Geometry).vertices[4].y =
         Math.sin(bird.phase) * 5;
     }
 
