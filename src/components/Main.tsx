@@ -12,8 +12,10 @@ export class Main extends Component<Main.Props, Main.State> {
         <div class="container">
           <div class="columns">
             <div class="column animated fadeInLeft">
-              <h1 class="title has-text-light">Paul Sastrasinh</h1>
-              <h2 class="subtitle has-text-light">Software Developer, NYC</h2>
+              {/* <div class="box"> */}
+              <h1 class="title has-text-white">Paul Sastrasinh</h1>
+              <h2 class="subtitle has-text-white">Software Developer, NYC</h2>
+              {/* </div> */}
             </div>
             <div class="column">
               <div class="buttons animated fadeInDown">
@@ -39,7 +41,7 @@ export class Main extends Component<Main.Props, Main.State> {
               </div>
               <div class="buttons animated fadeInUp">
                 <a
-                  class="button is-white is-outlined is-medium"
+                  class="button is-white is-medium"
                   href="https://medium.com/@paul.sastrasinh"
                 >
                   <span class="icon">
@@ -47,7 +49,7 @@ export class Main extends Component<Main.Props, Main.State> {
                   </span>
                 </a>
                 <a
-                  class="button is-white is-outlined is-medium"
+                  class="button is-white is-medium"
                   href="https://500px.com/psastras"
                 >
                   <span class="icon">
@@ -55,7 +57,7 @@ export class Main extends Component<Main.Props, Main.State> {
                   </span>
                 </a>
                 <a
-                  class="button is-white is-outlined is-medium"
+                  class="button is-white is-medium"
                   href="https://www.instagram.com/psastras/"
                 >
                   <span class="icon">
@@ -63,7 +65,7 @@ export class Main extends Component<Main.Props, Main.State> {
                   </span>
                 </a>
                 <a
-                  class="button is-white is-outlined is-medium"
+                  class="button is-white is-medium"
                   href="https://twitter.com/psastras"
                 >
                   <span class="icon">

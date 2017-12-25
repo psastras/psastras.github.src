@@ -1,5 +1,6 @@
 import { h, Component } from "preact";
 import * as THREE from "three";
+import * as color from "color";
 
 namespace Birds {
   export interface Props {}
@@ -253,7 +254,10 @@ class World {
       const bird = new THREE.Mesh(
         new Bird(),
         new THREE.MeshBasicMaterial({
-          color: Math.random() * 0xffffff,
+          color: 0xffffff,
+          opacity: 1,
+          transparent: true,
+          depthWrite: false,
           side: THREE.DoubleSide
         })
       );
@@ -307,6 +311,8 @@ class World {
   };
 
   private render = (): void => {
+    this.frame++;
+
     for (let i = 0, il = this.birds.length; i < il; i++) {
       const boid = this.boids[i];
       boid.run(this.boids);
@@ -314,16 +320,8 @@ class World {
       const bird = this.birds[i];
       bird.position.copy(this.boids[i].position);
 
-      let color = (bird.material as THREE.MeshBasicMaterial).color;
-      color.r = color.g = color.b =
-        1 -
-        Math.max(
-          1 - (200 + bird.position.z) / 200,
-          Math.max(
-            1 - (500 - Math.abs(bird.position.y)) / 500,
-            1 - (500 - Math.abs(bird.position.x)) / 500
-          )
-        );
+      const s = Math.max(2 * Math.abs(bird.position.z) / 200, 0);
+      (bird.material as THREE.MeshBasicMaterial).opacity = s;
 
       bird.rotation.y = Math.atan2(-boid.velocity.z, boid.velocity.x);
       bird.rotation.z = Math.asin(boid.velocity.y / boid.velocity.length());
