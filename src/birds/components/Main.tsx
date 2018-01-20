@@ -13,8 +13,8 @@ export class Main extends Component<Main.Props, Main.State> {
           <div class="columns">
             <div class="column animated fadeInLeft">
               {/* <div class="box"> */}
-              <h1 class="title has-text-white">Paul Sastrasinh</h1>
-              <h2 class="subtitle has-text-white">Software Developer, NYC</h2>
+              <h1 class="title has-text-black">Paul Sastrasinh</h1>
+              <h2 class="subtitle has-text-black">Software Developer, NYC</h2>
               {/* </div> */}
             </div>
             <div class="column">

@@ -1,0 +1,38 @@
+body,
+html {
+  font-family: "Cairo", sans-serif;
+  /* color: white; */
+  height: 100%;
+  background-image: radial-gradient(
+    rgb(255, 255, 255) 20%,
+    rgb(210, 210, 210) 120%
+  );
+
+  /* background-image: radial-gradient(rgb(30, 30, 30) 20%, rgb(0, 0, 0) 120%); */
+}
+
+#root:before {
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: -1;
+
+  display: block;
+  background: url(bg.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  filter: brightness(10%);
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}
+
+h1 {
+  text-transform: uppercase;
+}
+
+#root {
+  height: 100%;
+}
