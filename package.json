@@ -1,33 +1,24 @@
 {
-  "name": "psastras.github.src",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/psastras/psastras.github.src.git",
-  "author": "Paul Sastrasinh <psastras@gmail.com>",
-  "license": "MIT",
   "scripts": {
-    "start": "parcel src/index.html",
-    "build": "parcel build src/index.html  --public-url ./",
-    "precommit": "lint-staged",
-    "test": "echo 'test'"
-  },
-  "lint-staged": {
-    "*.{js,json,css,md,ts,tsx,jsx}": ["prettier --write", "git add"]
+    "test": "echo 0",
+    "build": "parcel build index.html",
+    "precommit": "pretty-quick --staged",
+    "start": "parcel index.html --no-cache"
   },
   "devDependencies": {
-    "@types/three": "^0.84.35",
+    "@types/classnames": "^2.2.3",
+    "@types/node": "^10.1.3",
     "husky": "^0.14.3",
-    "lint-staged": "^6.0.0",
-    "parcel-bundler": "^1.3.0",
-    "prettier": "^1.9.2",
-    "typescript": "^2.6.2"
+    "node-sass": "^4.9.0",
+    "parcel-bundler": "^1.8.1",
+    "prettier": "^1.12.1",
+    "pretty-quick": "^1.5.0",
+    "tslint": "^5.10.0",
+    "typescript": "^2.8.3"
   },
   "dependencies": {
-    "animate.css": "^3.5.2",
-    "bulma": "^0.6.1",
-    "color": "^2.0.1",
-    "font-awesome": "^4.7.0",
-    "preact": "^8.2.7",
-    "three": "^0.89.0"
+    "classnames": "^2.2.5",
+    "milligram": "^1.3.0",
+    "preact": "^8.2.9"
   }
 }
