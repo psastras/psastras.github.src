@@ -1,13 +1,30 @@
-<html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Home page of Paul Sastrasinh, developer, NYC." />
 
 <head>
-  <link href="https://fonts.googleapis.com/css?family=Crimson+Text|Tajawal" rel="stylesheet" />
-</head>
+  <title>Paul Sastrasinh - Developer - Home</title>
 </head>
 
 <body>
   <div id="app"></div>
   <script src="./index.tsx"></script>
+  <noscript id="deferred-styles">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Text|Tajawal" rel="stylesheet" />
+  </noscript>
+  <script>
+    var loadDeferredStyles = function () {
+      var addStylesNode = document.getElementById("deferred-styles");
+      var replacement = document.createElement("div");
+      replacement.innerHTML = addStylesNode.textContent;
+      document.body.appendChild(replacement)
+      addStylesNode.parentElement.removeChild(addStylesNode);
+    };
+    var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+      window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+    if (raf) raf(function () { window.setTimeout(loadDeferredStyles, 0); });
+    else window.addEventListener('load', loadDeferredStyles);
+  </script>
 </body>
 
 </html>

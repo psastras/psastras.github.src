@@ -29,6 +29,7 @@ export class App extends Component<AppProps, AppState> {
           <hr style={{ width: "50%", margin: "0" }} />
           <Box pad={{ vertical: "medium", between: "medium" }} direction="row">
             <a
+              rel="noopener"
               target="_blank"
               href="https://www.linkedin.com/in/paul-sastrasinh-82480153/"
               style={{ textTransform: "uppercase", letterSpacing: "0.2rem" }}
@@ -36,6 +37,7 @@ export class App extends Component<AppProps, AppState> {
               LinkedIn
             </a>
             <a
+              rel="noopener"
               target="_blank"
               href="https://github.com/psastras"
               style={{ textTransform: "uppercase", letterSpacing: "0.2rem" }}
