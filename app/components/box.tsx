@@ -1,9 +1,4 @@
-import {
-  h,
-  Component,
-  PreactHTMLAttributes,
-  PreactDOMAttributes
-} from "preact";
+import { Component, h } from "preact";
 const classnames = require("classnames/bind");
 const styles = require("./box.css");
 const c = classnames.bind(styles);
@@ -58,7 +53,7 @@ export interface BoxProps extends JSX.DOMAttributes, JSX.HTMLAttributes {
 }
 interface BoxState {}
 
-const toClassnames = (prefix, props: string | object): string[] => {
+const toClassnames = (prefix: string, props: string | any): string[] => {
   if (typeof props === "string") {
     return [`${prefix}-${props}`];
   }
@@ -67,7 +62,7 @@ const toClassnames = (prefix, props: string | object): string[] => {
 };
 
 export class Box extends Component<BoxProps, BoxState> {
-  render() {
+  render(): JSX.Element {
     const {
       children,
       className,

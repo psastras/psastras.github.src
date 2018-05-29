@@ -1,11 +1,13 @@
-import { h, Component } from "preact";
-import { Box } from "./components";
+import { Component, h } from "preact";
+import { Box, Renderer } from "./components";
+import { BoxScene } from "./scenes";
+import THREE = require("three");
 
 export interface AppProps {}
 interface AppState {}
 
 export class App extends Component<AppProps, AppState> {
-  render() {
+  render(): JSX.Element {
     return (
       <Box
         style={{
@@ -18,8 +20,25 @@ export class App extends Component<AppProps, AppState> {
       >
         <div
           style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            zIndex: 1
+          }}
+        >
+          <Renderer
+            init={BoxScene.init}
+            draw={BoxScene.draw}
+            dispose={BoxScene.dispose}
+          />
+        </div>
+        <div
+          style={{
             maxWidth: "960px",
-            width: "100%"
+            width: "100%",
+            zIndex: 2
           }}
         >
           <Box>
