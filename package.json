@@ -1,27 +1,22 @@
 {
   "scripts": {
     "test": "echo 0",
-    "build": "parcel build index.html",
+    "build": "npm-run-all build:*",
+    "build:assets": "cpx src/assets dist/assets",
+    "build:web": "parcel build src/index.html --public-url=.",
     "precommit": "pretty-quick --staged",
-    "start": "parcel index.html --no-cache"
+    "start": "live-server --open=src/index.html"
   },
   "devDependencies": {
-    "@types/classnames": "^2.2.3",
-    "@types/color": "^3.0.0",
-    "@types/node": "^10.1.3",
-    "husky": "^0.14.3",
-    "node-sass": "^4.9.0",
-    "parcel-bundler": "^1.8.1",
-    "prettier": "^1.12.1",
-    "pretty-quick": "^1.5.0",
-    "tslint": "^5.10.0",
-    "typescript": "^2.8.3"
+    "cpx": "^1.5.0",
+    "husky": "^1.0.0",
+    "live-server": "^1.2.0",
+    "npm-run-all": "^4.1.3",
+    "parcel-bundler": "^1.10.0",
+    "prettier": "^1.14.3",
+    "pretty-quick": "^1.7.0"
   },
   "dependencies": {
-    "@types/three": "^0.92.3",
-    "classnames": "^2.2.5",
-    "color": "^3.0.0",
-    "preact": "^8.2.9",
-    "three": "^0.92.0"
+    "mini.css": "^3.0.0"
   }
 }

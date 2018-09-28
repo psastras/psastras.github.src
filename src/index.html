@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paul Sastrasinh - Home</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="../node_modules/mini.css/dist/mini-default.css">
+</head>
+
+<body>
+  <div id="top" class="container" style="height: 100%">
+    <div class="row" style="height: 100%">
+      <div class="col-sm" style="display: flex; flex-direction: column">
+        <div style="margin: 1em 0; text-align: right">
+          <a class="button inverse" href="https://www.linkedin.com/in/psastras/" target="_blank">LinkedIn</a>
+          <a class="button inverse" href="http://github.com/psastras/" target="_blank">Github</a>
+        </div>
+        <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center; margin: 2em 0">
+          <h1 style="font-size: 7.5em">Paul Sastrasinh</h1>
+          <h2 style="font-size: 3.5em">Software Developer</h2>
+          <h2 style="font-size: 2.5em; margin: 0.5em 0">Tokyo, Japan</h2>
+        </div>
+        <div class="row">
+          <div class="col-sm-1">
+            <a href="#about">About Me</a>
+          </div>
+          <div class="col-sm-1">
+            <a href="#photography">Photography</a>
+          </div>
+          <hr style="margin: 1em 0 3em 0" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8" style="margin-bottom: 5em">
+        <h1 id="about">About Me</h1>
+        <p>I'm a full stack software developer located in Tokyo, Japan. I currently
+          work for Toyota Research
+          Institute, Advanced Development where I develop the cloud processing framework for self driving cars.
+        </p>
+        <p>My interests are in computer graphics, vision, and UX. My up to date resume and contact information are
+          available on LinkedIn. Feel free to contact me.</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-8">
+        <h2>Work & Education History</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-8">
+        <h3>Toyota Research Institute - Advanced Development (TRI-AD)</h3>
+        <h4>November 2018 - current</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-8">
+        <h3>Knewton</h3>
+        <h4>August 2014 - October 2018, Full Stack Senior Software Engineer</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-8">
+        <h3>Carnegie Mellon University</h3>
+        <h4>August 2012 - June 2014, Computer Science Department - Research (Computer Vision)</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-8">
+        <h3>Brown University</h3>
+        <h4>2012 MSc, Computer Science</h4>
+        <h4>2011 BSc, Applied Mathematics and Computer Science</h4>
+      </div>
+    </div>
+    <hr style="margin: 1em 0 3em 0" />
+    <div class="row">
+      <div class="col-sm-8" style="margin-bottom: 5em">
+        <h1 id="photography">Photography</h1>
+        <p>In my spare time I like to take photos. My current camera and lens is a Sony
+          a7rIII with a 16-35mm f/2.8 GM.
+          Below are some of my
+          latest pictures.</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-7" style="margin-bottom: 5em;">
+        <img class="lazy" alt="Empire state building at sunset" data-src="assets/img/empire_state_0.jpg">
+      </div>
+      <div class="col-sm-5" style="margin-bottom: 5em;">
+        <h3 style="margin-top: 0">Empire State Building, From the Top of the Rock</h3>
+        <h4>New York, NY</h4>
+        <p><small>19mm</small></p>
+        <p><small>1/8s f/11 ISO 400</small></p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-7" style="margin-bottom: 5em;">
+        <img class="lazy" alt="Lincoln center at night" data-src="assets/img/lincoln_center_0.jpg">
+      </div>
+      <div class="col-sm-5" style="margin-bottom: 5em;">
+        <h3 style="margin-top: 0">Lincoln Center at Night</h3>
+        <h4>New York, NY</h4>
+        <p><small>16mm</small></p>
+        <p><small>1/4s f/2.8 ISO 250</small></p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-7" style="margin-bottom: 5em;">
+        <img class="lazy" alt="Verazano bridge in the rain" data-src="assets/img/verazano_bridge_0.jpg">
+      </div>
+      <div class="col-sm-5" style="margin-bottom: 5em;">
+        <h3 style="margin-top: 0">Verazano Bridge, Rain</h3>
+        <h4>New York, NY</h4>
+        <p><small>19mm</small></p>
+        <p><small>1/320s f/2.8 ISO 320</small></p>
+      </div>
+    </div>
+  </div>
+  <hr style="margin: 1em 0 3em 0" />
+  <div class="container">
+    <div class="row">
+      <div class="col-sm" style="margin: 0 0 2em 0;">
+        <p>Thanks for reading.</p>
+        <p><a href="#top">Back to top</a></p>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function (w, d) {
+      var b = d.getElementsByTagName('body')[0];
+      var s = d.createElement("script");
+      var v = !("IntersectionObserver" in w) ? "8.15.0" : "10.17.0";
+      s.async = true; // This includes the script as async. See the "recipes" section for more information about async loading of LazyLoad.
+      s.src = "https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/" + v + "/lazyload.min.js";
+      w.lazyLoadOptions = {/* Your options here */ };
+      b.appendChild(s);
+    }(window, document));
+
+    var myLazyLoad = new LazyLoad({
+      elements_selector: ".lazy"
+    });
+  </script>
+</body>
+
+</html>
