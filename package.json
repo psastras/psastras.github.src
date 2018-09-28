@@ -2,7 +2,7 @@
   "scripts": {
     "test": "echo 0",
     "build": "npm-run-all build:web build:assets",
-    "build:assets": "cpx src/assets dist/assets",
+    "build:assets": "cpx 'src/assets/**/*.*' dist/assets",
     "build:web": "parcel build src/index.html --public-url=.",
     "precommit": "pretty-quick --staged",
     "start": "live-server --open=src/index.html"
