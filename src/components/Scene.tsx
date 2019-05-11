@@ -16,24 +16,20 @@ const Fatline = () => {
     () => colors[Math.floor(colors.length * Math.random())]
   );
   const [ratio] = useState(() => 0.5 + 0.5 * Math.random());
-  const [width] = useState(() => 2.5 * Math.max(0.001, 0.05 * Math.random()));
+  const [width] = useState(() => 0.5 * Math.max(0.001, 0.05 * Math.random()));
   // Calculate wiggly curve
   const [curve] = useState(() => {
-    let pos = new THREE.Vector3(
-      30 - 60 * Math.random(),
-      -5,
-      10 - 20 * Math.random()
-    );
+    let pos = new THREE.Vector3();
     return new Array(30)
       .fill(0)
       .map(() =>
         pos
           .add(
             new THREE.Vector3(
-              2 - Math.random() * 4,
-              4 - Math.random() * 2,
-              5 - Math.random() * 10
-            )
+              1 - Math.random() * 2,
+              1 - Math.random() * 2,
+              1 - Math.random() * 2
+            ).multiplyScalar(1)
           )
           .clone()
       );
@@ -84,7 +80,7 @@ export const Scene = () => {
   useRender(() =>
     group.current.rotation.set(
       0,
-      5 * Math.sin(THREE.Math.degToRad((theta += 0.01))),
+      0, //5 * Math.sin(THREE.Math.degToRad((theta += 0.01))),
       0
     )
   );

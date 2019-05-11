@@ -8,7 +8,7 @@ export const App = () => (
   <div className="main">
     <Canvas
       style={{ background: "#0D0D0D" }}
-      camera={{ position: new Vector3(0, 50, 10), fov: 75 }}
+      camera={{ position: new Vector3(0, 0, 10), fov: 75 }}
     >
       <Scene />
     </Canvas>
