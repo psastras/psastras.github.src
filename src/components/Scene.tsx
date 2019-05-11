@@ -84,7 +84,7 @@ export const Scene = () => {
   useRender(() =>
     group.current.rotation.set(
       0,
-      5 * Math.sin(THREE.Math.degToRad((theta += 0.001))),
+      5 * Math.sin(THREE.Math.degToRad((theta += 0.01))),
       0
     )
   );

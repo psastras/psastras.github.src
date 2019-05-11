@@ -1,6 +1,5 @@
 import * as React from "react";
-
-const styles = require("./overlay.css");
+import * as styles from "./overlay.css";
 
 export const Overlay: React.FunctionComponent = () => (
   <div className={styles.overlay}>
