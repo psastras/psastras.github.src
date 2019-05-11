@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "jsx": "react",
+    "pretty": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "types": ["src/typings"]
+  }
+}
