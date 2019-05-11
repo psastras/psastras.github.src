@@ -20,17 +20,36 @@
 
 .overlayTitle {
   font-weight: 700;
-  font-size: 10em;
+  font-size: 10vw;
   line-height: 0.9em;
   margin: 0;
-  letter-spacing: -15px;
 }
 
 .overlaySubtitle {
   font-family: "Josefin Sans", sans-serif;
   font-weight: 700;
-  font-size: 3em;
-  letter-spacing: -3px;
+  font-size: 3vw;
   line-height: 0.9em;
   margin: 0 0.25em;
+}
+
+@media (max-width: 480px) {
+  .overlayTitle {
+    font-weight: 700;
+    font-size: 50;
+    line-height: 0.9em;
+    margin: 0;
+  }
+
+  .overlaySubtitle {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    font-size: 20;
+    margin: 1em 0;
+  }
+
+  .overlaySubtitle a {
+    margin: 0.35em 0;
+  }
 }
