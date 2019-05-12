@@ -9,6 +9,7 @@ export const App = () => (
     <Canvas
       style={{ background: "#0D0D0D" }}
       camera={{ position: new Vector3(0, 0, 10), fov: 75 }}
+      pixelRatio={window.devicePixelRatio}
     >
       <Scene />
     </Canvas>

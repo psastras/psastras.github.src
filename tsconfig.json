@@ -8,6 +8,7 @@
     "pretty": true,
     "skipLibCheck": true,
     "allowJs": true,
+    "sourceMap": true,
     "types": ["src/typings"]
   }
 }

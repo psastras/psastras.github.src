@@ -54,7 +54,7 @@ const Fatline = () => {
             onUpdate={(self: {
               parent: { vertices: any };
               getPoints: (arg0: number) => void;
-            }) => (self.parent.vertices = self.getPoints(500))}
+            }) => (self.parent.vertices = self.getPoints(300))}
           />
         </geometry>
       </meshLine>
@@ -66,7 +66,7 @@ const Fatline = () => {
         depthTest={false}
         lineWidth={width}
         color={color}
-        dashArray={0.1}
+        dashArray={0.2}
         dashRatio={ratio}
       />
     </mesh>
@@ -80,7 +80,7 @@ export const Scene = () => {
   useRender(() =>
     group.current.rotation.set(
       0,
-      0, //5 * Math.sin(THREE.Math.degToRad((theta += 0.01))),
+      Math.sin(THREE.Math.degToRad((theta += 0.05))),
       0
     )
   );
