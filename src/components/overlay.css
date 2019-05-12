@@ -33,6 +33,20 @@
   margin: 0 0.25em;
 }
 
+.overlaySubSubtitle {
+  font-weight: 600;
+  font-size: 2vw;
+  margin: 0.5em 0.5em;
+}
+
+.overlaySubSubtitle a {
+  margin-right: 0.5em;
+}
+
+.overlaySubSubtitle a::before {
+  display: none;
+}
+
 @media (max-width: 480px) {
   .overlayTitle {
     font-weight: 700;
@@ -51,5 +65,16 @@
 
   .overlaySubtitle a {
     margin: 0.35em 0;
+  }
+
+  .overlaySubSubtitle {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+    font-size: 20;
+  }
+
+  .overlaySubSubtitle a {
+    margin-right: 1em;
   }
 }
