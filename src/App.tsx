@@ -5,14 +5,16 @@ import { Scene } from "./components/Scene";
 import { Overlay } from "./components/Overlay";
 
 export const App = () => (
-  <div className="main">
+  <>
     <Canvas
-      style={{ background: "#0D0D0D" }}
+      style={{
+        background: "linear-gradient(to top, #3a6186, #89253e)"
+      }}
       camera={{ position: new Vector3(0, 0, 10), fov: 75 }}
       pixelRatio={window.devicePixelRatio}
     >
       <Scene />
     </Canvas>
     <Overlay />
-  </div>
+  </>
 );
