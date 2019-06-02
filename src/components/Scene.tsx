@@ -19,20 +19,22 @@ const Fatline = () => {
   const [width] = useState(() => 0.5 * Math.max(0.001, 0.05 * Math.random()));
   // Calculate wiggly curve
   const [curve] = useState(() => {
-    let pos = new THREE.Vector3();
-    return new Array(30)
-      .fill(0)
-      .map(() =>
-        pos
-          .add(
-            new THREE.Vector3(
-              1 - Math.random() * 2,
-              1 - Math.random() * 2,
-              1 - Math.random() * 2
-            ).multiplyScalar(1)
-          )
-          .clone()
-      );
+    let pos = new THREE.Vector3(
+      -10 - Math.random() * 10,
+      (1 - Math.random() * 2) * 10,
+      0 // -1 - Math.random() * 2
+    );
+    return new Array(30).fill(0).map(() =>
+      pos
+        .add(
+          new THREE.Vector3(
+            1 + Math.random() * 2,
+            0, //1 - Math.random() * 2, // 1 - Math.random() * 2,
+            0 // 1 + Math.random() * 2
+          ).multiplyScalar(1)
+        )
+        .clone()
+    );
   });
   // Hook into the render loop and decrease the materials dash-offset
   useRender(() => (material.current.uniforms.dashOffset.value -= 0.0001));
@@ -77,13 +79,13 @@ export const Scene = () => {
   let group = useRef<any>();
   let theta = 0;
   // Hook into the render loop and rotate the scene a bit
-  useRender(() =>
-    group.current.rotation.set(
-      0,
-      Math.sin(THREE.Math.degToRad((theta += 0.05))),
-      0
-    )
-  );
+  // useRender(() =>
+  //   group.current.rotation.set(
+  //     0,
+  //     Math.sin(THREE.Math.degToRad((theta += 0.05))),
+  //     0
+  //   )
+  // );
   return (
     <group ref={group}>
       {lines.map((_, index) => (

@@ -1,6 +1,6 @@
 # psastras.github.io
 
-This repository contains the source for [psastras.github.io](psastras.github.io).
+This repository contains the source for [psastras.github.io](https://psastras.github.io/).
 
 ## Development
 
