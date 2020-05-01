@@ -9,7 +9,9 @@
   "private": false,
   "scripts": {
     "dev": "parcel index.html",
-    "build": "parcel build index.html --public-url=."
+    "build": "parcel build index.html --public-url=.",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "devDependencies": {
     "@commitlint/cli": "^7.6.1",
@@ -36,6 +38,8 @@
     "postcss-modules": "^1.4.1",
     "react-three-fiber": "^2.1.1",
     "three": "^0.104.0",
-    "three.meshline": "^1.2.0"
-  }
+    "three.meshline": "^1.2.0",
+    "snyk": "^1.316.1"
+  },
+  "snyk": true
 }
