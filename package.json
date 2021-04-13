@@ -30,10 +30,10 @@
     "typescript": "^3.4.5"
   },
   "dependencies": {
-    "autoprefixer": "^9.5.1",
+    "autoprefixer": "^10.0.0",
     "classnames": "^2.2.6",
     "parcel-plugin-typed-css-modules": "^1.1.0",
-    "postcss-modules": "^1.4.1",
+    "postcss-modules": "^4.0.0",
     "react-three-fiber": "^2.1.1",
     "three": "^0.104.0",
     "three.meshline": "^1.2.0"
