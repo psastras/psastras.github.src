@@ -35,7 +35,7 @@
     "parcel-plugin-typed-css-modules": "^1.1.0",
     "postcss-modules": "^1.4.1",
     "react-three-fiber": "^2.1.1",
-    "three": "^0.104.0",
+    "three": "^0.137.0",
     "three.meshline": "^1.2.0"
   }
 }
